@@ -629,14 +629,148 @@ def f2(x,a,b):
 def f(x):
     return x**2+10*np.sin(x)
 
-x=np.linspace(-10,10,200)
-y=f(x)+np.random.randn(200)
-params,d=op.curve_fit(f2,x,y,[2,2])
-plt.figure(3)
-plt.subplot(2,2,1)
-plt.plot(x,f(x))
-plt.subplot(2,2,2)
-plt.plot(x,y)
-plt.subplot(2,2,3)
-plt.plot(x,f2(x,params[0],params[1]))
+# x=np.linspace(-10,10,200)
+# y=f(x)+np.random.randn(200)
+# params,d=op.curve_fit(f2,x,y,[2,2])
+# plt.figure(3)
+# plt.subplot(2,2,1)
+# plt.plot(x,f(x))
+# plt.subplot(2,2,2)
+# plt.plot(x,y)
+# plt.subplot(2,2,3)
+# plt.plot(x,f2(x,params[0],params[1]))
+# plt.show()
+
+
+#import matplotlib.pylab as pl
+
+
+#exercise :curve fitting of temperature data
+# x_max=np.array([17,19,21,28,33,38,37,37,31,23,19,18])
+# x_min=np.array([-62,-59,-56,-46,-32,-18,-9,-13,-25,-46,-52,-58])
+# t=np.arange(1,13,1)
+# plt.plot(t,x_max,'r-',t,x_min,'g.')
+# # plt.show()
+#
+# def f_fit(x,a,b,c,d):
+#     return a*np.cos(b*x+c)+d
+#
+# proms,dd=op.curve_fit(f_fit,t,x_max)
+# print(proms)
+# plt.plot(t,f_fit(t,proms[0],proms[1],proms[2],proms[3]),'y-',linewidth=1)
+# proms1,dd1=op.curve_fit(f_fit,t,x_min)
+# plt.plot(t,f_fit(t,proms1[0],proms1[1],proms1[2],proms1[3]),'b-')
+# plt.show()
+#
+
+
+def f(x,y):
+    return (4-2.1*x**2+x**4/3)*x**2+x*y+(4*y**2-4)*y**2
+
+# x=np.linspace(-2,2,200)
+# y=np.linspace(-1,1,200)
+# X,Y=np.meshgrid(x,y)
+
+# from mpl_toolkits.mplot3d import Axes3D
+#
+# fig=plt.figure()
+# ax=Axes3D(fig)
+# ax.plot_surface(X,Y,f(X,Y),rstride=1,cstride=1,cmap=plt.cm.hot)
+# ax.contourf(X,Y,f(X,Y),zdir='z',offset=-1)
+#
+# plt.show()
+
+np.histogram
+
+
+import scipy.stats as stats
+
+
+
+a=np.random.normal(size=1000)
+# b=np.random.rand(10)
+# print(b[1:])
+# print('\n')
+# print(b[-3:-1])
+# print('\n')
+# print(b)
+#
+#
+#
+# bins=np.arange(-4,5)
+# histogram=np.histogram(a,bins,normed=True)[0]#当normed或者density就返回概率密度函数值
+# print(histogram)
+# bins=0.5*(bins[1:]+bins[:-1])
+#
+#
+# b=stats.norm.pdf(bins)#标准正太分布
+# plt.plot(bins,histogram)
+# plt.plot(bins,b)
+# plt.show()
+
+
+mu,sigma=stats.norm.fit(a)#如果知道分布类型，就能狗根据数据所在分布的数据算出来它的方差和期望
+print(mu,sigma)
+
+aa=np.random.gamma(shape=1,size=1000)
+bins=np.arange(-4,5)
+histogram=np.histogram(aa,bins,normed=True)
+print(histogram)
+print('\n')
+print(histogram[0])
+bins=0.5*(bins[1:]+bins[:-1])
+b=stats.gamma.pdf(bins,a=1)
+# plt.plot(bins,histogram[0])
+# plt.plot(bins,b)
+
+shape=stats.gamma.fit(aa)
+print(shape)
+# plt.show()
+
+print('\n')
+
+print(np.median(aa),'\n')
+print(np.median(a))
+
+print(stats.scoreatpercentile(a,50),'\n')
+
+
+
+a=np.random.rand(1000)
+b=np.random.normal(1,2,100)
+
+print(stats.ttest_ind(a,b))
+
+
+print('\n')
+
+
+
+
+from scipy.interpolate import interp1d
+
+
+
+
+measure_test=np.linspace(0,1,10)
+
+noise=(np.random.random(10)*2-1)*1e-1
+mesu=np.sin(2*np.pi*measure_test)+noise
+
+
+linear_interp=interp1d(measure_test,mesu)
+cuomputed_tim=np.linspace(0,1,50)
+
+linear_result=linear_interp(cuomputed_tim)
+cubic_interp=interp1d(measure_test,mesu,kind='cubic')
+cubic_result=cubic_interp(cuomputed_tim)
+print(linear_result)
+print('\n')
+measure=np.linspace(0,1,50)
+plt.plot(measure_test,mesu,'ro')
+
+plt.plot(measure,linear_result)
+plt.plot(measure,cubic_result)
+
+
 plt.show()

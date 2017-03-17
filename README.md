@@ -15,3 +15,5 @@ from scipy import misc
 msic.imread()
 
 ##scipy.linalg :linear algebra operations
+
+##切片操作是能取到到开头，但是取不到结尾。比如b[1:]能取到b[1]，但是b[:-1]是取不到最后一个的。
