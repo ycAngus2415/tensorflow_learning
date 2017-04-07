@@ -11,6 +11,7 @@
 
 ## scipy.io
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     io.loadmat/io.savemat
     from scipy import misc
@@ -52,6 +53,8 @@
 
 在配置的时候一定要主义安装目录和使用的python解释器。它会根据自己电脑中的硬件，和软件生成合适的包
 =======
+=======
+>>>>>>> origin/first
 io.loadmat/io.savemat
 from scipy import misc
 msic.imread()
@@ -59,4 +62,7 @@ msic.imread()
 ## scipy.linalg :linear algebra operations
 
 ## 切片操作是能取到到开头，但是取不到结尾。比如b[1:]能取到b[1]，但是b[:-1]是取不到最后一个的。
+<<<<<<< HEAD
+>>>>>>> origin/first
+=======
 >>>>>>> origin/first
