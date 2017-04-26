@@ -15,3 +15,4 @@ print(sess.run(state))
 for i in range(3):
     result=sess.run([update,one])
     print(result)
+

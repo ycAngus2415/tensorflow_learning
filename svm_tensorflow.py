@@ -1,0 +1,50 @@
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+x1 = np.random.uniform(3, 5, 100)
+y1 = np.random.uniform(0,10, 100)
+x2 = np.random.uniform(7, 9, 100)
+y2 = np.random.uniform(0,10, 100)
+#plt.plot(x1, y1, 'b*')
+#plt.plot(x2, y2, 'ro')
+label1 = -np.ones([1, 100])
+label2 = np.ones([1, 100])
+w = np.array([[np.cos(np.pi/3), np.sin(np.pi/3)], [ -np.sin(np.pi/3), np.cos(np.pi/3)]])
+input1 = np.array([x1,y1])
+print(input1.shape)
+input1 = np.matmul( w, input1)
+input2 = np.matmul(w, np.array([x2, y2]))
+plt.plot(input1[0], input1[1], 'b*')
+plt.plot(input2[0], input2[1], 'ro')
+x_in = np.append(input1, input2, 1)
+print(x_in.shape)
+label_in = np.append(label1, label2, 1)
+xx = np.matmul(x_in.T, x_in)
+yy = np.matmul(label_in.T, label_in)
+a = np.dot(xx, yy)
+print(a.shape)
+print(yy.shape)
+print(xx.shape)
+
+x = tf.placeholder(tf.float32, [2, None])
+w = tf.Variable(tf.random_uniform((1,2)), dtype='float32')
+b = tf.Variable(tf.zeros(1))
+y = tf.matmul(w, x) + b
+y_ = tf.placeholder(tf.float32, [1, None])
+loss = tf.reduce_mean(tf.pow(y-y_, 2))
+optimizer = tf.train.GradientDescentOptimizer(0.01)
+train = optimizer.minimize(loss)
+
+init = tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(init)
+    for _ in range(2000):
+        sess.run(train, feed_dict={x: np.append(input1, input2, 1), y_: np.append(label1, label2, 1)})
+    print(sess.run(loss, feed_dict={x: np.append(input1, input2, 1), y_:np.append(label1, label2, 1)}))
+    weight = sess.run(w)
+    basis = sess.run(b)
+axis = np.linspace(3, 9, 100)
+print(axis.shape)
+line = -axis * weight[0][0]/weight[0][1] - basis/weight[0][1]
+plt.plot(axis,line ,'g-')
+plt.show()

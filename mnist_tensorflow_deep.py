@@ -66,16 +66,20 @@ b_f2 = bias_variable([10])
 
 y = tf.nn.softmax(tf.matmul(h_f1_drop, w_f2) + b_f2)
 
-loss = -tf.reduce_mean(y_*tf.log(y))
+loss = -tf.reduce_mean(y_*tf.log(y), name='loss')
 train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 init = tf.global_variables_initializer()
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+summary_writer = tf.summary.FileWriter('log')
+summary_scalar = tf.summary.scalar('loss', loss)
 with tf.Session() as sess:
     sess.run(init)
     t0 = time.clock()
     for i in range(2000):
         batch = mnist.train.next_batch(50)
+        summary_str = sess.run(summary_scalar, feed_dict={x: batch[0], y_:batch[1], keep_prob: 1.0})
+        summary_writer.add_summary(summary_str, i)
         if i % 100 ==0:
             train_accuracy = accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
             print(time.clock() - t0)
